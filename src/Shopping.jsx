@@ -7,7 +7,7 @@ export default class Shopping extends Component {
    state={
         
         
-        
+        //qty:0,
         
         items:{
 
@@ -22,6 +22,8 @@ export default class Shopping extends Component {
    }
   
     handleclick=()=> {
+        //this.setState({qty:this.state.qty+1})
+        //console.log(this.state.qty)
         this.props.inBasket(this.state.items)
         this.props.countitem(this.state.items.qty)
     } 

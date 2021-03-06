@@ -15,7 +15,7 @@ export default class Basket extends Component {
    
     
     reduceitem = () => {
-        if (this.state.qty>=1) {
+        if (this.state.qty>=0) {
             this.setState({qty:this.state.qty-1})
            
         }else this.handleClick();
