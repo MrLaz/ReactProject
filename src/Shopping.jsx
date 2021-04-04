@@ -1,34 +1,31 @@
 import React, { Component } from 'react';
-
+import Basket from "./Basket";
 
 
 
 export default class Shopping extends Component {
    state={
         
-        
-        //qty:0,
-        
+        added:"Add to basket",
+        isdisabled:false,
         items:{
 
-			img:this.props.img,
-			name:this.props.name,
-			price:this.props.price,
-			key:Math.random(),
-			id:this.props.id,
-			qty:this.props.qty
-		}
+            img:this.props.img,
+            name:this.props.name,
+            price:this.props.price,
+            key:Math.random(),
+            id:this.props.id,
+            qty:0
+        }
+        
     
    }
   
-    handleclick=()=> {
-        //this.setState({qty:this.state.qty+1})
-        //console.log(this.state.qty)
-        this.props.inBasket(this.state.items)
-        this.props.countitem(this.state.items.qty)
+    addtobasket=()=> {
+        this.setState({isdisabled:true,added:"Added"});
+        return this.props.inBasket(this.state.items)
     } 
-    
-    
+  
     render() {
         return (
             
@@ -40,7 +37,8 @@ export default class Shopping extends Component {
                     <h2 className="item-name">{this.props.name}</h2>
                     <h3 className="item-price">£{this.props.price}</h3>				
 				</div>
-                <button className="addbasket" onClick={this.handleclick}>Add to basket</button>
+                
+                <button disabled={this.state.isdisabled} className="addbasket" onClick={this.addtobasket}>{this.state.added}</button>
 			</div>
             
         );

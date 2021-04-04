@@ -10,11 +10,11 @@ export default class App extends Component {
 	
 	
 	state={
-		
-		inBasket:[],
 		qty:0,
+		inBasket:[],
+		
 		isBasket:true,
-		subtotal:0,
+		
 		items:[
 			{
 				name:"Playstation 5",
@@ -58,28 +58,30 @@ export default class App extends Component {
 	
 	shopping = () => {
 				
-		return this.state.items.map((item) => (
+		return this.state.items.map((item) =>  (
 									
 			<Shopping 
 				name={item.name}
 				img={item.img}
 				price={item.price}
 				inBasket={this.inBasket}
-				key={Math.random()}
-				id={item.name}
-				countitem={this.countitem}
 				qty={this.state.qty}
+				id={item.name}
+				
+				
 				
 				
 			/>		
 	  	));								
 	}
-		
 	
-	deleteItem = (id)	=> {
+	deleteItem = (id,sub)	=> {
+		
 		this.setState({
 			
-			inBasket: this.state.inBasket.filter((item) => item.name !== id)
+			inBasket: this.state.inBasket.filter((item) => item.name !== id),
+			qty:this.state.qty-1,
+			subtotal:this.state.subtotal-sub,
 		});
 		this.basket() 
 
@@ -94,20 +96,11 @@ export default class App extends Component {
 	}
 
 	basket = () => {
-		let newlist=[]
-		this.state.inBasket.forEach((obj)=> {
-			if (!newlist.some(item=> item.name===obj.name)) {
-				newlist.push({...obj})
-				
-				}
-			})	
 	
 		
 		
 		
-		
-		
-		return newlist.map((item)=>(
+		return this.state.inBasket.map((item)=>(
 
 		
 			
@@ -118,37 +111,52 @@ export default class App extends Component {
 				key={item.key}
 				id={item.name}
 				deleteItem={this.deleteItem}
-				qty={item.qty}
-				inBasket={this.inBasket}
+				subtotal={this.subtotal}
+				
 				
 				/>
 		));
 	}
-	countitem=(qty)=>{
+	
+	
+	inBasket=(item)=>{
 		
-				this.setState({qty:qty+1})
+		 	
+		 this.setState({inBasket:[...this.state.inBasket,item],qty:this.state.qty+1});
+		if (this.state.inBasket.length>0) {
+			this.setState({subtotal:this.state.inBasket.reduce((a,b)=> a.price+b.price)})
+		}
+		
+		
+		
+	
+		
+	}					
+		
+
+				
+	sub=()=>{
+		this.state.subtotal.reduce((a,b)=>a+b);
+	}				
+				
 			
-	
+	subtotal= (q)=> {
+		this.setState({subtotal:q})
+		console.log(this.state.subtotal)
 	}
-	
-	inBasket=(items)=>{
 		
-		this.setState({inBasket:[...this.state.inBasket,items]});
+		
+		
+				
+
+		
 		
 		
 		 
-	}
+	cd
 	
-	
-	subtotal= ()=> {
-		
-		let sum= this.state.inBasket.map((item)=>item.price);
-		let subtotal=sum.reduce((a,b)=>a+b);
-	
-		return subtotal;
-	}
 	render() {
-			
+		
 		let isBasket= this.state.isBasket;
 		
 		return (
@@ -156,7 +164,7 @@ export default class App extends Component {
 				<div className="navi">
 
 				<div className="button" onClick={this.shopClick}>Shopping</div>
-				<div className="button"onClick={this.basketClick}>Go to basket&nbsp;({this.state.inBasket.length})</div>
+				<div className="button"onClick={this.basketClick}>Go to basket&nbsp;({this.state.qty})</div>
 				
 				</div>
 				
@@ -179,7 +187,7 @@ export default class App extends Component {
 									{this.basket()}
 									<div className="subtotal">
 										<div>Subtotal</div>
-											£{this.subtotal()}
+											£{this.sub}
 									</div>
 								</div>							
 							

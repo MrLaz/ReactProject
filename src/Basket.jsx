@@ -6,30 +6,38 @@ export default class Basket extends Component {
     state= {
         
         price:this.props.price,
-        qty:this.props.qty,
-        key:this.props.key
+        qty:1,
+        
+        id:this.props.id
     }
     handleClick = () => {
-        this.props.deleteItem(this.props.id);
+        this.props.deleteItem(this.props.id,this.state.qty*this.props.price);
     }
    
     
     reduceitem = () => {
-        if (this.state.qty>=0) {
+        if (this.state.qty>0){
             this.setState({qty:this.state.qty-1})
            
-        }else this.handleClick();
-    }
+        }
+    }        
+     
+         
+        
+    
     additem = () => {
         
         this.setState({qty:this.state.qty+1})
         
        
     }
-  
+    
+    update=()=>{
+        this.props.subtotal(this.state.qty*this.state.price)
+        
+    }
     render() {
-       
-           
+          this.update(); 
         return (
             <>
             
@@ -51,7 +59,7 @@ export default class Basket extends Component {
                             
                             <button onClick={this.additem} className="minus-plus">+</button>
                         </div> 
-                      
+              
                 <button className="basket-button" onClick={this.handleClick}>Delete</button>            
                 </div>
                 <div className="basket-price">£{this.state.qty*this.state.price}</div>				
